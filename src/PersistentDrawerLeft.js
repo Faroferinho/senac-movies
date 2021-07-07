@@ -145,7 +145,6 @@ const PersistentDrawerLeft = () => {
         <div className={classes.drawerHeader} />
 
         <BuscaForm />
-		
 
       </main>
     </div>
