@@ -41,13 +41,27 @@ export default function BuscaForm() {
   const [initialMovies, setInitialMovies] = useState(movies);
   const [error, setError] = useState(false);
 
+  const removeDuplicated = (array) =>{
+	  const filteredArr = array.reduce((acumulator, curent)=>{
+		  const result = acumulator.find(item => item.Title === curent.Title);
+		  if(!result){
+			  return acumulator.concat([curent]);
+		  }else{
+			  return acumulator;
+		  }
+	  }, []);
+	  return filteredArr;
+  }
+
   const getMoviesApi = (event) =>{
 	event.preventDefault();
 	if(search.length > 2 ){
 		setError(false);
 		api.get(`/?apikey=67f2f4c&&s=${search}`).then((response)=>{
-			setMoviesFiltered(response.data.Search);
-			setInitialMovies([...initialMovies, ...response.data.Search]);
+			if(response.data.Response != "False"){
+				setMoviesFiltered(response.data.Search);
+				setInitialMovies(removeDuplicated([...initialMovies, ...response.data.Search]));
+			}
 		})
 	}else{
 		setError(true);
